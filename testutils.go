@@ -43,12 +43,14 @@ func randomTimeSeries(size int) *TimeSeries {
 func mockTimeSeriesOCHL(values ...[]float64) *TimeSeries {
 	ts := NewTimeSeries()
 	for i, ochl := range values {
-		candle := NewCandle(NewTimePeriod(time.Unix(int64(i), 0), time.Second))
-		candle.OpenPrice = big.NewDecimal(ochl[0])
-		candle.ClosePrice = big.NewDecimal(ochl[1])
-		candle.MaxPrice = big.NewDecimal(ochl[2])
-		candle.MinPrice = big.NewDecimal(ochl[3])
-		candle.Volume = big.NewDecimal(float64(i))
+		candle := NewCandle(
+			NewTimePeriod(time.Unix(int64(i), 0), time.Second),
+			WithOpenPrice(big.NewDecimal(ochl[0])),
+			WithClosePrice(big.NewDecimal(ochl[1])),
+			WithMaxPrice(big.NewDecimal(ochl[2])),
+			WithMinPrice(big.NewDecimal(ochl[3])),
+			WithVolumPrice(big.NewDecimal(float64(i))),
+		)
 
 		ts.AddCandle(candle)
 	}
@@ -59,12 +61,14 @@ func mockTimeSeriesOCHL(values ...[]float64) *TimeSeries {
 func mockTimeSeries(values ...string) *TimeSeries {
 	ts := NewTimeSeries()
 	for _, val := range values {
-		candle := NewCandle(NewTimePeriod(time.Unix(int64(candleIndex), 0), time.Second))
-		candle.OpenPrice = big.NewFromString(val)
-		candle.ClosePrice = big.NewFromString(val)
-		candle.MaxPrice = big.NewFromString(val).Add(big.ONE)
-		candle.MinPrice = big.NewFromString(val).Sub(big.ONE)
-		candle.Volume = big.NewFromString(val)
+		candle := NewCandle(
+			NewTimePeriod(time.Unix(int64(candleIndex), 0), time.Second),
+			WithOpenPrice(big.NewFromString(val)),
+			WithClosePrice(big.NewFromString(val)),
+			WithMaxPrice(big.NewFromString(val).Add(big.ONE)),
+			WithMinPrice(big.NewFromString(val).Sub(big.ONE)),
+			WithVolumPrice(big.NewFromString(val)),
+		)
 
 		ts.AddCandle(candle)
 
@@ -101,8 +105,6 @@ func dump(indicator Indicator) (values []float64) {
 		values = append(values, math.Round(indicator.Calculate(index).Float()*m)/m)
 		index++
 	}
-
-	return
 }
 
 func indicatorEquals(t *testing.T, expected []float64, indicator Indicator) {

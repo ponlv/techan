@@ -23,11 +23,13 @@ func BasicEma() techan.Indicator {
 		start, _ := strconv.ParseInt(datum[0], 10, 64)
 		period := techan.NewTimePeriod(time.Unix(start, 0), time.Hour*24)
 
-		candle := techan.NewCandle(period)
-		candle.OpenPrice = big.NewFromString(datum[1])
-		candle.ClosePrice = big.NewFromString(datum[2])
-		candle.MaxPrice = big.NewFromString(datum[3])
-		candle.MinPrice = big.NewFromString(datum[4])
+		candle := techan.NewCandle(
+			period,
+			techan.WithOpenPrice(big.NewFromString(datum[1])),
+			techan.WithClosePrice(big.NewFromString(datum[2])),
+			techan.WithMaxPrice(big.NewFromString(datum[3])),
+			techan.WithMinPrice(big.NewFromString(datum[4])),
+		)
 
 		series.AddCandle(candle)
 	}

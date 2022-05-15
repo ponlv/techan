@@ -23,8 +23,8 @@ func (tri trueRangeIndicator) Calculate(index int) big.Decimal {
 	candle := tri.series.Candles[index]
 	previousClose := tri.series.Candles[index-1].ClosePrice
 
-	trueHigh := big.MaxSlice(candle.MaxPrice, previousClose)
-	trueLow := big.MinSlice(candle.MinPrice, previousClose)
+	trueHigh := big.MaxSlice(candle.MaxPrice(), previousClose())
+	trueLow := big.MinSlice(candle.MinPrice(), previousClose())
 
 	return trueHigh.Sub(trueLow)
 }

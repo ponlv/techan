@@ -39,7 +39,7 @@ func TestExponentialMovingAverage(t *testing.T) {
 	})
 }
 
-func BenchmarkExponetialMovingAverage(b *testing.B) {
+func BenchmarkExponentialMovingAverage(b *testing.B) {
 	size := 10000
 	ts := randomTimeSeries(size)
 

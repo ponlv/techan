@@ -145,14 +145,14 @@ func (baha BuyAndHoldAnalysis) Analyze(record *TradingRecord) float64 {
 
 	openOrder := Order{
 		Side:   BUY,
-		Amount: big.NewDecimal(baha.StartingMoney).Div(baha.TimeSeries.Candles[0].ClosePrice),
-		Price:  baha.TimeSeries.Candles[0].ClosePrice,
+		Amount: big.NewDecimal(baha.StartingMoney).Div(baha.TimeSeries.Candles[0].ClosePrice()),
+		Price:  baha.TimeSeries.Candles[0].ClosePrice(),
 	}
 
 	closeOrder := Order{
 		Side:   SELL,
 		Amount: openOrder.Amount,
-		Price:  baha.TimeSeries.Candles[len(baha.TimeSeries.Candles)-1].ClosePrice,
+		Price:  baha.TimeSeries.Candles[len(baha.TimeSeries.Candles)-1].ClosePrice(),
 	}
 
 	pos := NewPosition(openOrder)

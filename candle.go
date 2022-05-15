@@ -7,59 +7,101 @@ import (
 	"github.com/sdcoffey/big"
 )
 
-// Candle represents basic market information for a security over a given time period
-type Candle struct {
-	Period     TimePeriod
-	OpenPrice  big.Decimal
-	ClosePrice big.Decimal
-	MaxPrice   big.Decimal
-	MinPrice   big.Decimal
-	Volume     big.Decimal
-	TradeCount uint
+type Candle interface {
+	Period() TimePeriod
+	OpenPrice() big.Decimal
+	ClosePrice() big.Decimal
+	MaxPrice() big.Decimal
+	MinPrice() big.Decimal
+	Volume() big.Decimal
+	String() string
 }
+
+// Candle represents basic market information for a security over a given time period
+type candle struct {
+	period     TimePeriod
+	openPrice  big.Decimal
+	closePrice big.Decimal
+	maxPrice   big.Decimal
+	minPrice   big.Decimal
+	volume     big.Decimal
+}
+
+type candleBuildOption = func(*candle)
 
 // NewCandle returns a new *Candle for a given time period
-func NewCandle(period TimePeriod) (c *Candle) {
-	return &Candle{
-		Period:     period,
-		OpenPrice:  big.ZERO,
-		ClosePrice: big.ZERO,
-		MaxPrice:   big.ZERO,
-		MinPrice:   big.ZERO,
-		Volume:     big.ZERO,
+func NewCandle(period TimePeriod, options ...candleBuildOption) Candle {
+	candle := &candle{
+		period:     period,
+		openPrice:  big.ZERO,
+		closePrice: big.ZERO,
+		maxPrice:   big.ZERO,
+		minPrice:   big.ZERO,
+		volume:     big.ZERO,
+	}
+
+	for i := range options {
+		options[i](candle)
+	}
+
+	return candle
+}
+
+func WithOpenPrice(openPrice big.Decimal) candleBuildOption {
+	return func(i *candle) {
+		i.openPrice = openPrice
 	}
 }
 
-// AddTrade adds a trade to this candle. It will determine if the current price is higher or lower than the min or max
-// price and increment the tradecount.
-func (c *Candle) AddTrade(tradeAmount, tradePrice big.Decimal) {
-	if c.OpenPrice.Zero() {
-		c.OpenPrice = tradePrice
+func WithClosePrice(closePrice big.Decimal) candleBuildOption {
+	return func(i *candle) {
+		i.closePrice = closePrice
 	}
-	c.ClosePrice = tradePrice
-
-	if c.MaxPrice.Zero() {
-		c.MaxPrice = tradePrice
-	} else if tradePrice.GT(c.MaxPrice) {
-		c.MaxPrice = tradePrice
-	}
-
-	if c.MinPrice.Zero() {
-		c.MinPrice = tradePrice
-	} else if tradePrice.LT(c.MinPrice) {
-		c.MinPrice = tradePrice
-	}
-
-	if c.Volume.Zero() {
-		c.Volume = tradeAmount
-	} else {
-		c.Volume = c.Volume.Add(tradeAmount)
-	}
-
-	c.TradeCount++
 }
 
-func (c *Candle) String() string {
+func WithMinPrice(minPrice big.Decimal) candleBuildOption {
+	return func(i *candle) {
+		i.minPrice = minPrice
+	}
+}
+
+func WithMaxPrice(maxPrice big.Decimal) candleBuildOption {
+	return func(i *candle) {
+		i.maxPrice = maxPrice
+	}
+}
+
+func WithVolumPrice(volume big.Decimal) candleBuildOption {
+	return func(i *candle) {
+		i.volume = volume
+	}
+}
+
+func (c *candle) Period() TimePeriod {
+	return c.period
+}
+
+func (c *candle) OpenPrice() big.Decimal {
+	return c.openPrice
+}
+
+func (c *candle) ClosePrice() big.Decimal {
+	return c.closePrice
+}
+
+func (c *candle) MaxPrice() big.Decimal {
+	return c.maxPrice
+}
+
+func (c *candle) MinPrice() big.Decimal {
+	return c.minPrice
+}
+
+func (c *candle) Volume() big.Decimal {
+	return c.volume
+}
+
+func (c *candle) String() string {
 	return strings.TrimSpace(fmt.Sprintf(
 		`
 Time:	%s
@@ -69,11 +111,11 @@ High:	%s
 Low:	%s
 Volume:	%s
 	`,
-		c.Period,
-		c.OpenPrice.FormattedString(2),
-		c.ClosePrice.FormattedString(2),
-		c.MaxPrice.FormattedString(2),
-		c.MinPrice.FormattedString(2),
-		c.Volume.FormattedString(2),
+		c.period,
+		c.openPrice.FormattedString(2),
+		c.closePrice.FormattedString(2),
+		c.maxPrice.FormattedString(2),
+		c.minPrice.FormattedString(2),
+		c.volume.FormattedString(2),
 	))
 }

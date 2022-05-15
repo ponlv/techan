@@ -11,6 +11,18 @@ type cachedIndicator interface {
 	windowSize() int
 }
 
+type ResetCachedIndicator interface {
+	ResetCacheByIndex(index int) Indicator
+}
+
+func resetCacheByIndex(cache resultCache, index int) resultCache {
+	if index > len(cache) {
+		return cache
+	}
+
+	return append(resultCache{}, cache[:index]...)
+}
+
 func cacheResult(indicator cachedIndicator, index int, val big.Decimal) {
 	if index < len(indicator.cache()) {
 		indicator.cache()[index] = &val

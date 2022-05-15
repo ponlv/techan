@@ -18,8 +18,7 @@ func TestVolumeIndicator_Calculate(t *testing.T) {
 	candle := NewCandle(TimePeriod{
 		Start: time.Now(),
 		End:   time.Now().Add(time.Minute),
-	})
-	candle.Volume = big.NewFromString("1.2080")
+	}, WithVolumPrice(big.NewFromString("1.2080")))
 
 	series.AddCandle(candle)
 
@@ -33,10 +32,11 @@ func TestTypicalPriceIndicator_Calculate(t *testing.T) {
 	candle := NewCandle(TimePeriod{
 		Start: time.Now(),
 		End:   time.Now().Add(time.Minute),
-	})
-	candle.MinPrice = big.NewFromString("1.2080")
-	candle.MaxPrice = big.NewFromString("1.22")
-	candle.ClosePrice = big.NewFromString("1.215")
+	},
+		WithMinPrice(big.NewFromString("1.2080")),
+		WithMaxPrice(big.NewFromString("1.22")),
+		WithClosePrice(big.NewFromString("1.215")),
+	)
 
 	series.AddCandle(candle)
 

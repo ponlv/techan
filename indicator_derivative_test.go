@@ -20,7 +20,7 @@ func TestDerivativeIndicator(t *testing.T) {
 		assert.EqualValues(t, "0", indicator.Calculate(1).String())
 
 		for i := 2; i < len(series.Candles); i++ {
-			expected := series.Candles[i-2].ClosePrice
+			expected := series.Candles[i-2].ClosePrice()
 
 			assert.EqualValues(t, expected.String(), indicator.Calculate(i).String())
 		}

@@ -36,6 +36,12 @@ func (ema *emaIndicator) Calculate(index int) big.Decimal {
 	return result
 }
 
+func (ema *emaIndicator) ResetCacheByIndex(index int) Indicator {
+	ema.resultCache = resetCacheByIndex(ema.resultCache, index)
+
+	return ema
+}
+
 func (ema emaIndicator) cache() resultCache { return ema.resultCache }
 
 func (ema *emaIndicator) setCache(newCache resultCache) {
