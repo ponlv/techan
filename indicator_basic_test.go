@@ -18,12 +18,12 @@ func TestVolumeIndicator_Calculate(t *testing.T) {
 	candle := NewCandle(TimePeriod{
 		Start: time.Now(),
 		End:   time.Now().Add(time.Minute),
-	}, WithVolumPrice(big.NewFromString("1.2080")))
+	}, WithVolumePrice(2))
 
 	series.AddCandle(candle)
 
 	indicator := NewVolumeIndicator(series)
-	assert.EqualValues(t, "1.208", indicator.Calculate(0).FormattedString(3))
+	assert.EqualValues(t, "2.000", indicator.Calculate(0).FormattedString(3))
 }
 
 func TestTypicalPriceIndicator_Calculate(t *testing.T) {

@@ -49,7 +49,7 @@ func mockTimeSeriesOCHL(values ...[]float64) *TimeSeries {
 			WithClosePrice(big.NewDecimal(ochl[1])),
 			WithMaxPrice(big.NewDecimal(ochl[2])),
 			WithMinPrice(big.NewDecimal(ochl[3])),
-			WithVolumPrice(big.NewDecimal(float64(i))),
+			WithVolumePrice(int64(i)),
 		)
 
 		ts.AddCandle(candle)
@@ -67,7 +67,6 @@ func mockTimeSeries(values ...string) *TimeSeries {
 			WithClosePrice(big.NewFromString(val)),
 			WithMaxPrice(big.NewFromString(val).Add(big.ONE)),
 			WithMinPrice(big.NewFromString(val).Sub(big.ONE)),
-			WithVolumPrice(big.NewFromString(val)),
 		)
 
 		ts.AddCandle(candle)

@@ -21,7 +21,7 @@ func TestCandle_String(t *testing.T) {
 		WithOpenPrice(big.NewFromString("2")),
 		WithMaxPrice(big.NewFromString("3")),
 		WithMinPrice(big.NewFromString("0")),
-		WithVolumPrice(big.NewFromString("10")),
+		WithVolumePrice(10),
 	)
 
 	expected := strings.TrimSpace(fmt.Sprintf(`
@@ -30,7 +30,7 @@ Open:	2.00
 Close:	1.00
 High:	3.00
 Low:	0.00
-Volume:	10.00
+Volume:	10
 `, candle.Period()))
 
 	assert.EqualValues(t, expected, candle.String())

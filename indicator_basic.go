@@ -12,7 +12,7 @@ func NewVolumeIndicator(series *TimeSeries) Indicator {
 }
 
 func (vi volumeIndicator) Calculate(index int) big.Decimal {
-	return vi.Candles[index].Volume()
+	return big.NewDecimal(float64(vi.Candles[index].Volume()))
 }
 
 type closePriceIndicator struct {

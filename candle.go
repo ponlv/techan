@@ -13,7 +13,7 @@ type Candle interface {
 	ClosePrice() big.Decimal
 	MaxPrice() big.Decimal
 	MinPrice() big.Decimal
-	Volume() big.Decimal
+	Volume() int64
 	String() string
 }
 
@@ -24,7 +24,7 @@ type candle struct {
 	closePrice big.Decimal
 	maxPrice   big.Decimal
 	minPrice   big.Decimal
-	volume     big.Decimal
+	volume     int64
 }
 
 type candleBuildOption = func(*candle)
@@ -37,7 +37,7 @@ func NewCandle(period TimePeriod, options ...candleBuildOption) Candle {
 		closePrice: big.ZERO,
 		maxPrice:   big.ZERO,
 		minPrice:   big.ZERO,
-		volume:     big.ZERO,
+		volume:     0,
 	}
 
 	for i := range options {
@@ -71,7 +71,7 @@ func WithMaxPrice(maxPrice big.Decimal) candleBuildOption {
 	}
 }
 
-func WithVolumPrice(volume big.Decimal) candleBuildOption {
+func WithVolumePrice(volume int64) candleBuildOption {
 	return func(i *candle) {
 		i.volume = volume
 	}
@@ -97,7 +97,7 @@ func (c *candle) MinPrice() big.Decimal {
 	return c.minPrice
 }
 
-func (c *candle) Volume() big.Decimal {
+func (c *candle) Volume() int64 {
 	return c.volume
 }
 
@@ -109,13 +109,13 @@ Open:	%s
 Close:	%s
 High:	%s
 Low:	%s
-Volume:	%s
+Volume:	%d
 	`,
 		c.period,
 		c.openPrice.FormattedString(2),
 		c.closePrice.FormattedString(2),
 		c.maxPrice.FormattedString(2),
 		c.minPrice.FormattedString(2),
-		c.volume.FormattedString(2),
+		c.volume,
 	))
 }
