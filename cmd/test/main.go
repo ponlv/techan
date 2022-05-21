@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/sdcoffey/big"
-	"github.com/sdcoffey/techan"
+	"github.com/konrin/techan"
 )
 
 func main() {

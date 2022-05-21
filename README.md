@@ -1,18 +1,18 @@
 ## Techan
-![](https://travis-ci.org/sdcoffey/techan.svg?branch=master)
+![](https://travis-ci.org/konrin/techan.svg?branch=master)
 
-[![codecov](https://codecov.io/gh/sdcoffey/techan/branch/master/graph/badge.svg)](https://codecov.io/gh/sdcoffey/techan)
+[![codecov](https://codecov.io/gh/konrin/techan/branch/master/graph/badge.svg)](https://codecov.io/gh/konrin/techan)
 
 TechAn is a **tech**nical **an**alysis library for Go! It provides a suite of tools and frameworks to analyze financial data and make trading decisions.
 
-## Features 
+## Features
 * Basic and advanced technical analysis indicators
 * Profit and trade analysis
 * Strategy building
 
 ### Installation
 ```sh
-$ go get github.com/sdcoffey/techan
+$ go get github.com/konrin/techan
 ```
 
 ### Quickstart
@@ -58,7 +58,7 @@ exitConstant := techan.NewConstantIndicator(10)
 entryRule := techan.And(
 	techan.NewCrossUpIndicatorRule(entryConstant, indicator),
 	techan.PositionNewRule{})
-	
+
 // Is satisfied when the price ema moves below 10 and the current position is open
 exitRule := techan.And(
 	techan.NewCrossDownIndicatorRule(indicator, exitConstant),
