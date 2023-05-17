@@ -1,4 +1,4 @@
-module github.com/konrin/techan
+module github.com/ponlv/techan
 
 go 1.12
 
