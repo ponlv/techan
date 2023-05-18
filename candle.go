@@ -19,6 +19,7 @@ type Candle interface {
 
 // Candle represents basic market information for a security over a given time period
 type candle struct {
+	timestamp  int64 
 	period     TimePeriod
 	openPrice  big.Decimal
 	closePrice big.Decimal
@@ -47,6 +48,11 @@ func NewCandle(period TimePeriod, options ...candleBuildOption) Candle {
 	return candle
 }
 
+func WithTimeStamp(timestamp int64) candleBuildOption {
+	return func(i *candle) {
+		i.timestamp = timestamp
+	} 
+}
 func WithOpenPrice(openPrice big.Decimal) candleBuildOption {
 	return func(i *candle) {
 		i.openPrice = openPrice
